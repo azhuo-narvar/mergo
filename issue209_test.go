@@ -24,3 +24,22 @@ func TestIssue209(t *testing.T) {
 		}
 	}
 }
+
+func TestWithAppendSliceReversely(t *testing.T) {
+	dst := []string{"a", "b"}
+	src := []string{"c", "d"}
+
+	if err := mergo.Merge(&dst, src, mergo.WithAppendSlice, mergo.WithAppendSliceReversely); err != nil {
+		t.Error(err)
+	}
+
+	expected := []string{"c", "d", "a", "b"}
+	if len(dst) != len(expected) {
+		t.Errorf("arrays not equal length")
+	}
+	for i := range expected {
+		if dst[i] != expected[i] {
+			t.Errorf("array elements at %d are not equal", i)
+		}
+	}
+}
